@@ -10,7 +10,7 @@ class Main extends JFrame {
 	//number of elements
 	private JLabel lblElementCount = new JLabel("Elements:");
 	private JTextField txtElementCount = new JTextField();
-	private JButton btnElementCount  = new JButton("Set");
+	//private JButton btnElementCount  = new JButton("Set");
 	
 	//choose color
 	private JLabel lblColorSet = new JLabel("Colors: ");
@@ -18,9 +18,9 @@ class Main extends JFrame {
 	JComboBox<String> drpChooseColor = new JComboBox<String>(colorChoices);
 	private JButton btnColorSet = new JButton("Set");
 
-  
-	private JTextField txtB = new JTextField();
-	private JTextField txtC = new JTextField();
+	private SortGraphics panel = new SortGraphics();
+	//private JTextField txtB = new JTextField(); (template stuff)
+	//private JTextField txtC = new JTextField();
 
   	
 	
@@ -41,16 +41,18 @@ class Main extends JFrame {
 		//number of elements
 		lblElementCount.setBounds(50,450, 70,30);
 		txtElementCount.setBounds(140,450, 100,30);
-		btnElementCount.setBounds(260,450, 70,30);
+		//btnElementCount.setBounds(260,450, 70,30);
 		
 		//color
-		lblColorSet.setBounds(50,500, 70,30);
-		drpChooseColor.setBounds(140,500, 100,30);
+		lblColorSet.setBounds(50,480, 70,30);
+		drpChooseColor.setBounds(140,480, 100,30);
 		btnColorSet.setBounds(260,500, 70,30);
 
-		
-		txtB.setBounds(100,35,100,20);
-		txtC.setBounds(100,65,100,20);
+		panel.setBounds(50,50,700,350);
+		panel.setPreferredSize(new Dimension(700, 350));
+		panel.setBackground(Color.GREEN);
+		//txtB.setBounds(100,35,100,20);
+		//txtC.setBounds(100,65,100,20); (stuff that came with the template)
 
     
 		
@@ -59,7 +61,7 @@ class Main extends JFrame {
 
 		add(lblElementCount);
 		add(txtElementCount);
-		add(btnElementCount);
+		//add(btnElementCount);
 		
 		add(lblColorSet);
 		drpChooseColor.setVisible(true);
@@ -69,10 +71,12 @@ class Main extends JFrame {
 
 		
 		add(lblC);
+		add(panel);
+		panel.setVisible(true);
 
 
-		add(txtB);
-		add(txtC);
+		//add(txtB);
+		//add(txtC); (stuff that came with the template)
 	}
 
 	private void initEvent(){
@@ -83,31 +87,79 @@ class Main extends JFrame {
 			}
 		});
 
-		btnElementCount.addActionListener(new ActionListener() {
-	
-		public void actionPerformed(ActionEvent e) {
-			btnElementCountClick(e);
+		/*btnElementCount.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnElementCountClick(e);
 			}
-		});
+		});*/
 
 		btnColorSet.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				btnColorSetClick(e);
 			}
 		});
+		
+		txtElementCount.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				txtElementSet(e);
+			}
+		});
+		
+	}
+	private void txtElementSet(ActionEvent evt){
+		try{
+			double d = Double.valueOf(txtElementCount.getText());
+			int x = (int)(d);
+			if(x<10) {
+				txtElementCount.setText("10");
+			} else if(x>1000) {
+				txtElementCount.setText("1000");
+			} else {
+				txtElementCount.setText(x+"");
+			}
+		}catch(Exception e){
+			String exc = e.toString();
+			if(exc.contains("java.lang.NumberFormatException")) {
+				txtElementCount.setText("100");
+			}else {
+			System.out.println(e);
+			JOptionPane.showMessageDialog(null, 
+				e.toString(),
+				"Error", 
+				JOptionPane.ERROR_MESSAGE);
+			}
+		}
 	}
   
-	private void btnElementCountClick(ActionEvent evt){
-		System.exit(0);
-	}
+	/*private void btnElementCountClick(ActionEvent evt){
+			
+			
+		try{
+			double d = Double.valueOf(txtElementCount.getText());
+			int x = (int)(d);
+			if(x<10) {
+				txtElementCount.setText("10");
+			} else if(x>1000) {
+				txtElementCount.setText("1000");
+			} else {
+				txtElementCount.setText(x+"");
+			}
+		}catch(Exception e){
+			System.out.println(e);
+			JOptionPane.showMessageDialog(null, 
+				e.toString(),
+				"Error", 
+				JOptionPane.ERROR_MESSAGE);
+		}
+	}*/
   
 	private void btnColorSetClick(ActionEvent evt){
 		Integer x,y,z;
 		try{
-			x = Integer.parseInt(txtElementCount.getText());
-			y = Integer.parseInt(txtB.getText());
-			z = x + y;
-			txtC.setText(z.toString());
+			//x = Integer.parseInt(txtElementCount.getText()); (stuff that came with the template)
+			//y = Integer.parseInt(txtB.getText());
+			//z = x + y;
+			//txtC.setText(z.toString());
 
 		}catch(Exception e){
 			System.out.println(e);
@@ -121,5 +173,13 @@ class Main extends JFrame {
 	public static void main(String[] args){
 		Main f = new Main();
 	    f.setVisible(true);
+	}
+}
+
+class SortGraphics extends JPanel{
+	public void paintcomponent(Graphics g) {
+		super.paintComponent(g);
+		g.setColor(Color.RED);
+		g.fillRect(10, 10, 100, 100);
 	}
 }
