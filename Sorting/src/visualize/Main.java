@@ -5,7 +5,8 @@ import java.awt.*;
 import java.awt.event.*;
 
 class Main extends JFrame {
-
+	//lol
+	
 	//number of elements
 	private JLabel lblElementCount = new JLabel("Elements:");
 	private JTextField txtElementCount = new JTextField();
