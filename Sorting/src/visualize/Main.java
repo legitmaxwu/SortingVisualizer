@@ -35,8 +35,7 @@ class Main extends JFrame {
 
 	private void initComponent(){
 		//panel
-		panel.setNumElements(500);
-		panel.initElements();
+		panel.initElements(50);
 		
 		//number of elements
 		lblElementCount.setBounds(50,450, 70,30);
@@ -101,13 +100,17 @@ class Main extends JFrame {
 		try{
 			double d = Double.valueOf(txtElementCount.getText());
 			int x = (int)(d);
-			if(x<10) {
-				txtElementCount.setText("10");
-			} else if(x>1000) {
-				txtElementCount.setText("1000");
+			if(x<1) {
+				txtElementCount.setText("1");
+				panel.initElements(1);
+			} else if(x>500) {
+				txtElementCount.setText("500");
+				panel.initElements(500);
 			} else {
 				txtElementCount.setText(x+"");
+				panel.initElements(x);
 			}
+			
 		}catch(Exception e){
 			String exc = e.toString();
 			if(exc.contains("java.lang.NumberFormatException")) {
@@ -158,19 +161,14 @@ class Main extends JFrame {
 				e.toString(),
 				"Error", 
 				JOptionPane.ERROR_MESSAGE);
-		}	
-	}
-	
-	public static void update() {
-		while (true) {
-			
 		}
 	}
-  
+	
+
 	public static void main(String[] args){
 		Main f = new Main();
-	    f.setVisible(true);
-	    update();
+	    while(true)
+	    	f.setVisible(true);
 	}
 }
 

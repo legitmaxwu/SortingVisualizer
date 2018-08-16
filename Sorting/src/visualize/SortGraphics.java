@@ -3,9 +3,13 @@ package visualize;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 class SortGraphics extends JPanel{
 	private int WIDTH = 700;
@@ -21,19 +25,18 @@ class SortGraphics extends JPanel{
         setVisible(true);
 	}
 	
-	public void setNumElements(int size) {
+	public void initElements(int size) {
 		numElements = size;
-	}
-	
-	public void initElements() {
 		elements = new int[numElements];
 		maxElement = Integer.MIN_VALUE;
 		for (int i = 0; i < elements.length; i++) {
-			elements[i] = i*i - 200*i + 10000;
+			elements[i] = (i - 10) * (i - 10);//elements.length - i;
 			if (elements[i] > maxElement)
 				maxElement = elements[i];
 		}
+		repaint();
 	}
+	
 	public void sort() {
 		for (int i = 0; i < elements.length; i++)
 		{
@@ -48,11 +51,15 @@ class SortGraphics extends JPanel{
 			int temp = elements[i];
 			elements[i] = elements[minIndex];
 			elements[minIndex] = temp;
-			repaint();
-//			try {
-//				TimeUnit.SECONDS.sleep(1);
-//			} catch(Exception e) {
-//			}
+			paintImmediately(new Rectangle(0,0, WIDTH,HEIGHT));
+			try        
+			{
+			    Thread.sleep(100);
+			} 
+			catch(InterruptedException ex) 
+			{
+			    Thread.currentThread().interrupt();
+			}
 		}
 	}
 	
@@ -64,8 +71,12 @@ class SortGraphics extends JPanel{
 		g.setColor(Color.BLACK);
 		int j = 0;
 		for (int i = 0; i < WIDTH - 1; i++) {
-			if ((double)i / (double)WIDTH > (double)j / (double)numElements) {
+			if ((double)i / (double)WIDTH > (double)(j + 1) / (double)numElements) {
 				j++;
+			}
+			if (j >= numElements) {
+				j--;
+				break;
 			}
 			int buffer = (int)((double)elements[j] / (double)maxElement * (double)HEIGHT);
 			g.fillRect(i,HEIGHT-buffer, 1,buffer);
