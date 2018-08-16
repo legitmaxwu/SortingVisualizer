@@ -22,10 +22,6 @@ class Main extends JFrame {
 	//private JTextField txtB = new JTextField(); (template stuff)
 	//private JTextField txtC = new JTextField();
 
-  	
-	
-	private JLabel lblC = new JLabel("C :");
-
 	public Main(){
 		setTitle("Sorting Visualizer");
 		setSize(800,600);
@@ -38,6 +34,10 @@ class Main extends JFrame {
 	}
 
 	private void initComponent(){
+		//panel
+		panel.setNumElements(500);
+		panel.initElements();
+		
 		//number of elements
 		lblElementCount.setBounds(50,450, 70,30);
 		txtElementCount.setBounds(140,450, 100,30);
@@ -48,15 +48,9 @@ class Main extends JFrame {
 		drpChooseColor.setBounds(140,480, 100,30);
 		btnColorSet.setBounds(260,500, 70,30);
 
-		panel.setBounds(50,50,700,350);
-		panel.setPreferredSize(new Dimension(700, 350));
-		panel.setBackground(Color.GREEN);
 		//txtB.setBounds(100,35,100,20);
 		//txtC.setBounds(100,65,100,20); (stuff that came with the template)
 
-    
-		
-		lblC.setBounds(20,65,100,20);
 
 
 		add(lblElementCount);
@@ -69,10 +63,7 @@ class Main extends JFrame {
 		
 		add(btnColorSet);
 
-		
-		add(lblC);
 		add(panel);
-		panel.setVisible(true);
 
 
 		//add(txtB);
@@ -160,7 +151,7 @@ class Main extends JFrame {
 			//y = Integer.parseInt(txtB.getText());
 			//z = x + y;
 			//txtC.setText(z.toString());
-
+			panel.sort();
 		}catch(Exception e){
 			System.out.println(e);
 			JOptionPane.showMessageDialog(null, 
@@ -169,17 +160,17 @@ class Main extends JFrame {
 				JOptionPane.ERROR_MESSAGE);
 		}	
 	}
+	
+	public static void update() {
+		while (true) {
+			
+		}
+	}
   
 	public static void main(String[] args){
 		Main f = new Main();
 	    f.setVisible(true);
+	    update();
 	}
 }
 
-class SortGraphics extends JPanel{
-	public void paintcomponent(Graphics g) {
-		super.paintComponent(g);
-		g.setColor(Color.RED);
-		g.fillRect(10, 10, 100, 100);
-	}
-}
