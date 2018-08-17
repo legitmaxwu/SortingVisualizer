@@ -5,18 +5,48 @@ import java.awt.*;
 import java.awt.event.*;
 
 class Main extends JFrame {
-	//lol
 	
 	//number of elements
 	private JLabel lblElementCount = new JLabel("Elements:");
 	private JTextField txtElementCount = new JTextField();
 	//private JButton btnElementCount  = new JButton("Set");
 	
+	//iterations (display)
+	private static int iterations = 0;
+	private void setIterations(int i) {iterations = i;}
+	private static JLabel lblIterations = new JLabel("Iterations: " + iterations);
+	
+	//delay and time set
+	private JTextField txtDelay = new JTextField();
+	private JTextField txtTime = new JTextField();
+	
+	///NEXT COLUMN///
+	
+	//select sort
+	private JLabel lblSelectSort = new JLabel("Sort:");
+	String[] sortChoices = {"Selection Sort", "Insertion Sort", "Quick Sort"};
+	JComboBox<String> drpChooseSort = new JComboBox<String>(sortChoices);
+	private JButton btnSort = new JButton("Sort");
+	
+	//select scramble
+	private JLabel lblSelectScramble = new JLabel("Mix:");
+	String[] scrambleChoices = {"Random"}; //TODO
+	JComboBox<String> drpChooseScramble = new JComboBox<String>(scrambleChoices);
+	private JButton btnScramble = new JButton("Mix");
+	
+	///NEXT COLUMN///
+	
 	//choose color
 	private JLabel lblColorSet = new JLabel("Colors: ");
-	String[] colorChoices = {"Rainbow", "White"};
+	String[] colorChoices = {"Rainbow", "Black", "White"};
 	JComboBox<String> drpChooseColor = new JComboBox<String>(colorChoices);
 	private JButton btnColorSet = new JButton("Set");
+	
+	//choose background
+	private JLabel lblBackgroundSet = new JLabel("Backgd: ");
+	String[]backgroundChoices = {"White", "Black", "Gray"};
+	JComboBox<String> drpChooseBackground = new JComboBox<String>(backgroundChoices);
+	private JButton btnBackgroundSet = new JButton("Set");
 
 	private SortGraphics panel = new SortGraphics();
 	//private JTextField txtB = new JTextField(); (template stuff)
@@ -41,26 +71,68 @@ class Main extends JFrame {
 		lblElementCount.setBounds(50,450, 70,30);
 		txtElementCount.setBounds(140,450, 100,30);
 		//btnElementCount.setBounds(260,450, 70,30);
+		add(lblElementCount);
+		add(txtElementCount);
+		//add(btnElementCount);
+		
+		//iterations (display)
+		lblIterations.setBounds(50,485, 190,30);
+		add(lblIterations);
+		
+		//delay and time set
+		//TODO
+		//add(txtDelay);
+		//add(txtTime);
+		
+		///NEXT COLUMN///
+		
+		//select sort
+		lblSelectSort.setBounds(260,450, 30,30);
+		drpChooseSort.setBounds(300,450, 110,30);
+		btnSort.setBounds(415,450, 60,30);
+		add(lblSelectSort);
+		drpChooseSort.setVisible(true);
+		add(drpChooseSort);
+		add(btnSort);
+		
+		//select scramble
+		lblSelectScramble.setBounds(260,485, 30,30);
+		drpChooseScramble.setBounds(300,485, 110,30);
+		btnScramble.setBounds(415,485, 60,30);
+		add(lblSelectScramble);
+		drpChooseScramble.setVisible(true);
+		add(drpChooseScramble);
+		add(btnScramble);
+		
+		///NEXT COLUMN///
 		
 		//color
-		lblColorSet.setBounds(50,480, 70,30);
-		drpChooseColor.setBounds(140,480, 100,30);
-		btnColorSet.setBounds(260,500, 70,30);
+		lblColorSet.setBounds(520,450, 70,30);
+		drpChooseColor.setBounds(580,450, 100,30);
+		btnColorSet.setBounds(685,450, 60,30);
+		add(lblColorSet);
+		drpChooseColor.setVisible(true);
+		add(drpChooseColor);
+		
+		//background
+		lblBackgroundSet.setBounds(520,485, 70,30);
+		drpChooseBackground.setBounds(580,485, 100,30);
+		btnBackgroundSet.setBounds(685,485, 60,30);
+		add(lblBackgroundSet);
+		drpChooseBackground.setVisible(true);
+		add(drpChooseBackground);
+		add(btnBackgroundSet);
 
 		//txtB.setBounds(100,35,100,20);
 		//txtC.setBounds(100,65,100,20); (stuff that came with the template)
 
 
 
-		add(lblElementCount);
-		add(txtElementCount);
-		//add(btnElementCount);
 		
-		add(lblColorSet);
-		drpChooseColor.setVisible(true);
-		add(drpChooseColor);
+
 		
 		add(btnColorSet);
+		
 
 		add(panel);
 
@@ -82,18 +154,43 @@ class Main extends JFrame {
 				btnElementCountClick(e);
 			}
 		});*/
-
+		
+		//number of elements
+		txtElementCount.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				txtElementSet(e);
+			}
+		});
+		
+		//sort
+		btnSort.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnSortClick(e);
+			}
+		});
+		
+		//scramble
+		btnScramble.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnScrambleClick(e);
+			}
+		});
+		
+		//color
 		btnColorSet.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				btnColorSetClick(e);
 			}
 		});
 		
-		txtElementCount.addActionListener(new ActionListener() {
+		//background
+		btnBackgroundSet.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				txtElementSet(e);
+				btnBackgroundSetClick(e);
 			}
 		});
+		
+
 		
 	}
 	private void txtElementSet(ActionEvent evt){
@@ -125,19 +222,9 @@ class Main extends JFrame {
 		}
 	}
   
-	/*private void btnElementCountClick(ActionEvent evt){
-			
-			
+	private void btnSortClick(ActionEvent evt) {
 		try{
-			double d = Double.valueOf(txtElementCount.getText());
-			int x = (int)(d);
-			if(x<10) {
-				txtElementCount.setText("10");
-			} else if(x>1000) {
-				txtElementCount.setText("1000");
-			} else {
-				txtElementCount.setText(x+"");
-			}
+			panel.sort((String) drpChooseSort.getSelectedItem());
 		}catch(Exception e){
 			System.out.println(e);
 			JOptionPane.showMessageDialog(null, 
@@ -145,16 +232,35 @@ class Main extends JFrame {
 				"Error", 
 				JOptionPane.ERROR_MESSAGE);
 		}
-	}*/
-  
-	private void btnColorSetClick(ActionEvent evt){
-		Integer x,y,z;
+	}
+	
+	private void btnScrambleClick(ActionEvent evt) {
 		try{
-			//x = Integer.parseInt(txtElementCount.getText()); (stuff that came with the template)
-			//y = Integer.parseInt(txtB.getText());
-			//z = x + y;
-			//txtC.setText(z.toString());
-			panel.sort();
+			panel.scramble((String) drpChooseScramble.getSelectedItem());
+		}catch(Exception e){
+			System.out.println(e);
+			JOptionPane.showMessageDialog(null, 
+				e.toString(),
+				"Error", 
+				JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	private void btnColorSetClick(ActionEvent evt) {
+		try{
+			panel.elementColor((String) drpChooseColor.getSelectedItem());
+		}catch(Exception e){
+			System.out.println(e);
+			JOptionPane.showMessageDialog(null, 
+				e.toString(),
+				"Error", 
+				JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	private void btnBackgroundSetClick(ActionEvent evt) {
+		try{
+			panel.backgroundColor((String) drpChooseBackground.getSelectedItem());
 		}catch(Exception e){
 			System.out.println(e);
 			JOptionPane.showMessageDialog(null, 
@@ -167,8 +273,9 @@ class Main extends JFrame {
 
 	public static void main(String[] args){
 		Main f = new Main();
-	    while(true)
+	    while(true) {
 	    	f.setVisible(true);
+	    }
 	}
 }
 
