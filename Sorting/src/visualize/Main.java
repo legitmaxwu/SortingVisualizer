@@ -13,7 +13,10 @@ class Main extends JFrame {
 	
 	//iterations (display)
 	private static int iterations = 0;
-	private void setIterations(int i) {iterations = i;}
+	public void setIterations(int i) {iterations = i;}
+	public void updateIterations() {
+		lblIterations.setText("Iterations: " + iterations);
+	}
 	private static JLabel lblIterations = new JLabel("Iterations: " + iterations);
 	
 	//delay and time set
@@ -48,7 +51,7 @@ class Main extends JFrame {
 	JComboBox<String> drpChooseBackground = new JComboBox<String>(backgroundChoices);
 	private JButton btnBackgroundSet = new JButton("Set");
 
-	private SortGraphics panel = new SortGraphics();
+	private SortGraphics panel = new SortGraphics(this);
 	//private JTextField txtB = new JTextField(); (template stuff)
 	//private JTextField txtC = new JTextField();
 
@@ -176,6 +179,13 @@ class Main extends JFrame {
 			}
 		});
 		
+		//sorttype
+		drpChooseSort.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				drpChooseSortUpdate(e);
+			}
+		});
+		
 		//color
 		btnColorSet.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -193,6 +203,7 @@ class Main extends JFrame {
 
 		
 	}
+	
 	private void txtElementSet(ActionEvent evt){
 		try{
 			double d = Double.valueOf(txtElementCount.getText());
@@ -219,6 +230,18 @@ class Main extends JFrame {
 				"Error", 
 				JOptionPane.ERROR_MESSAGE);
 			}
+		}
+	}
+	
+	private void drpChooseSortUpdate(ActionEvent evt) {
+		try{
+			panel.updateIterations((String)drpChooseSort.getSelectedItem());
+		}catch(Exception e){
+			System.out.println(e);
+			JOptionPane.showMessageDialog(null, 
+				e.toString(),
+				"Error", 
+				JOptionPane.ERROR_MESSAGE);
 		}
 	}
   

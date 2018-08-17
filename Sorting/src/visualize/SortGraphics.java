@@ -4,12 +4,15 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.util.Arrays;
 
 import javax.swing.JPanel;
 
 import sortingAlgorithms.*;
 
 public class SortGraphics extends JPanel{
+	private Main main;
+	
 	private int WIDTH = 700;
 	private int HEIGHT = 350;
 	private int numElements;
@@ -34,7 +37,8 @@ public class SortGraphics extends JPanel{
 		hPivot = hP;
 	}
 	
-	public SortGraphics() {
+	public SortGraphics(Main m) {
+		main = m;
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
         //setBackground(Color.GREEN);
         setBounds(50,50, WIDTH,HEIGHT);
@@ -75,6 +79,7 @@ public class SortGraphics extends JPanel{
 			if (elements[i] > maxElement)
 				maxElement = elements[i];
 		}
+		updateIterations((String)main.drpChooseSort.getSelectedItem());
 		repaint();
 	}
 	
@@ -89,6 +94,8 @@ public class SortGraphics extends JPanel{
 				elements[j] = temp;
 			}
 		}
+		
+		updateIterations((String)main.drpChooseSort.getSelectedItem());
 		repaint();
 	}
 	
@@ -97,6 +104,16 @@ public class SortGraphics extends JPanel{
 		boolean test = true;
 		return s.sort(test);
 	}
+	
+	public void updateIterations(String sortType) {
+		int[] temp = Arrays.copyOf(elements, elements.length);
+		int i = getIterations(sortType);
+		//System.out.println(i);
+		main.setIterations(i);
+		main.updateIterations();
+		elements = temp;
+	}
+	
 	public void sort(String desired) {
 		SortingMain s = new SortingMain(this, desired);
 		boolean test = false;

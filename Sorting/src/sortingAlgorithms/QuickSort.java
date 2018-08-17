@@ -32,7 +32,7 @@ public class QuickSort {
 				sg.paintImmediately(new Rectangle(0,0, sg.getWIDTH(), sg.getHEIGHT()));
 				try        
 				{
-				    Thread.sleep(2); //FIX DIS
+				    Thread.sleep(10); //FIX DIS
 				} 
 				catch(InterruptedException ex) 
 				{
