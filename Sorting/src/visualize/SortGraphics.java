@@ -25,6 +25,23 @@ public class SortGraphics extends JPanel{
 	private int hIndex2 = -1;
 	private int hPivot = -1;
 	
+	private int sleepLength;
+	public int getSleep() {return sleepLength;}
+	public void setSleep(int s) {sleepLength = s;
+							main.getTxtDelay().setText("" + sleepLength);}
+	public void setSleep() {sleepLength = (int)(time * 1000.0 / (double)main.getIterations());
+							main.getTxtDelay().setText("" + sleepLength);}
+	private double time;
+	public double getTime() {return time;}
+	public void setTime(double t) {time = t;
+							main.getTxtTime().setText("" + (int)time);}
+	public void setTime() {time = (double)((double)sleepLength / 1000.0 * (double)main.getIterations());
+							main.getTxtTime().setText("" + (int)time);};
+	
+	private boolean KILL = false;
+	public boolean getKILL() {return KILL;}
+	public void setKILL(boolean b) {KILL = b;}
+	
 	public void clearHighlights() {
 		hIndex1 = -1;
 		hIndex2 = -1;
@@ -80,6 +97,8 @@ public class SortGraphics extends JPanel{
 				maxElement = elements[i];
 		}
 		updateIterations((String)main.drpChooseSort.getSelectedItem());
+		setTime();
+		setSleep();
 		repaint();
 	}
 	
@@ -95,6 +114,7 @@ public class SortGraphics extends JPanel{
 			}
 		}
 		
+		setSleep(15);
 		updateIterations((String)main.drpChooseSort.getSelectedItem());
 		repaint();
 	}
@@ -102,7 +122,7 @@ public class SortGraphics extends JPanel{
 	public int getIterations(String sortType) {
 		SortingMain s = new SortingMain(this, sortType);
 		boolean test = true;
-		return s.sort(test);
+		return s.sort(test, 0);
 	}
 	
 	public void updateIterations(String sortType) {
@@ -112,12 +132,13 @@ public class SortGraphics extends JPanel{
 		main.setIterations(i);
 		main.updateIterations();
 		elements = temp;
+		setTime();
 	}
 	
 	public void sort(String desired) {
 		SortingMain s = new SortingMain(this, desired);
 		boolean test = false;
-		s.sort(test);
+		s.sort(test, sleepLength);
 		clearHighlights();
 		repaint();
 	}
@@ -129,26 +150,25 @@ public class SortGraphics extends JPanel{
 //		initElements();
 		
 		int j = 0;
-		for (int i = 0; i < WIDTH - 1; i++) {
+		for (int i = 0; i < WIDTH; i++) {
 			g.setColor(elementColor);
 
-			if ((double)i / (double)WIDTH >= (double)(j + 1) / (double)numElements) {
+			if ((double)i / (double)WIDTH >= (double)(j + 1) / (double)numElements)
 				j++;
-			}
 			
 			//Color and Highlighting Management
 			if (rainbow == true) {
-				g.setColor(new Color(Color.HSBtoRGB(0.8f * (float)(elements[j] - 1) / (float)maxElement, 0.6f, 1.0f)));
+				g.setColor(new Color(Color.HSBtoRGB(0.8f * (float)(elements[j] - 1) / (float)maxElement, 1.0f, 1.0f)));
 			}
 			if (j == hIndex1 || j == hIndex2) {
 				g.setColor(Color.YELLOW);
 				if (rainbow == true)
-					g.setColor(new Color(Color.HSBtoRGB(0.8f * (float)(elements[j] - 1) / (float)maxElement, 0.8f, 1.0f)));
+					g.setColor(new Color(Color.HSBtoRGB(0.8f * (float)(elements[j] - 1) / (float)maxElement, 1.0f, 0.6f)));
 			}
 			if (j == hPivot) {
 				g.setColor(Color.RED);
 				if (rainbow == true)
-					g.setColor(new Color(Color.HSBtoRGB(0.8f * (float)(elements[j] - 1) / (float)maxElement, 1.0f, 1.0f)));
+					g.setColor(new Color(Color.HSBtoRGB(0.8f * (float)(elements[j] - 1) / (float)maxElement, 1.0f, 0.4f)));
 			}
 			
 			if (j > numElements) {

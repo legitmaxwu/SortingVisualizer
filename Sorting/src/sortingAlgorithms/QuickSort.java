@@ -7,7 +7,7 @@ import visualize.SortGraphics;
 public class QuickSort {
 	static int iterations = 0;
 	
-	public static void quickSortFunc (int[] array, int start, int end, SortGraphics sg, boolean test)
+	public static void quickSortFunc (int[] array, int start, int end, SortGraphics sg, boolean test, int sleep)
 	{
 		//if (start >= end) return;
 		
@@ -17,8 +17,44 @@ public class QuickSort {
 		
 		while (i < j)
 		{
-			while (array[i] < pivot) i++;
-			while (array[j] > pivot) j--;
+			while (array[i] < pivot) { 
+				i++;
+				if (sg.getKILL())
+					return;
+				if (test == false) {
+					sg.setHighlights(i, j, pivot);
+					sg.paintImmediately(new Rectangle(0,0, sg.getWIDTH(), sg.getHEIGHT()));
+					try        
+					{
+					    Thread.sleep(sleep);
+					} 
+					catch(InterruptedException ex) 
+					{
+					    Thread.currentThread().interrupt();
+					}
+				}
+				else
+					iterations++;
+			}
+			while (array[j] > pivot) {
+				j--;
+				if (sg.getKILL())
+					return;
+				if (test == false) {
+					sg.setHighlights(i, j, pivot);
+					sg.paintImmediately(new Rectangle(0,0, sg.getWIDTH(), sg.getHEIGHT()));
+					try        
+					{
+					    Thread.sleep(sleep);
+					} 
+					catch(InterruptedException ex) 
+					{
+					    Thread.currentThread().interrupt();
+					}
+				}
+				else
+					iterations++;
+			}
 			if (i <= j)
 			{
 				int temp = array[i];
@@ -27,20 +63,7 @@ public class QuickSort {
 				i++;
 				j--;
 			}
-			if (test == false) {
-				sg.setHighlights(i, j, pivot);
-				sg.paintImmediately(new Rectangle(0,0, sg.getWIDTH(), sg.getHEIGHT()));
-				try        
-				{
-				    Thread.sleep(10); //FIX DIS
-				} 
-				catch(InterruptedException ex) 
-				{
-				    Thread.currentThread().interrupt();
-				}
-			}
-			else
-				iterations++;
+
 
 //			if (array[i] < pivot)
 //				i++;
@@ -60,15 +83,15 @@ public class QuickSort {
 //				i--;
 		}
 
-		if (start < j) quickSortFunc (array, start, j, sg, test);
-		if (i < end) quickSortFunc (array, i, end, sg, test);
+		if (start < j) quickSortFunc (array, start, j, sg, test, sleep);
+		if (i < end) quickSortFunc (array, i, end, sg, test, sleep);
 		
 	}
 	
-	public static int quickSort (int[] array, SortGraphics sg, boolean test)
+	public static int quickSort (int[] array, SortGraphics sg, boolean test, int sleep)
 	{
 		iterations = 0;
-		quickSortFunc(array, 0, array.length - 1, sg, test);
+		quickSortFunc(array, 0, array.length - 1, sg, test, sleep);
 		return iterations;
 	}
 }

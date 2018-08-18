@@ -1,20 +1,41 @@
 package sortingAlgorithms;
 
+import java.awt.Rectangle;
+
+import visualize.SortGraphics;
+
 public class InsertionSort {
 	
-	public static void insertionSort(int[] array)
+	public static int insertionSort(int[] array, SortGraphics sg, boolean test, int sleep)
 	{
+		int iterations = 0;
 		for (int i = 1; i < array.length; i++)
 		{
 			if (array[i] < array[i - 1])
 			{
 				int value = array[i];
 				int j;
-				for (j = i; j > 0 && array[j - 1] > value; j--)
+				for (j = i; j > 0 && array[j - 1] > value; j--) {
 					array[j] = array[j - 1];
+					if (test == false) {
+						sg.setHighlights(j, -1, i);
+						sg.paintImmediately(new Rectangle(0,0, sg.getWIDTH(), sg.getHEIGHT()));
+						try        
+						{
+						    Thread.sleep(sleep); //FIX DIS
+						} 
+						catch(InterruptedException ex) 
+						{
+						    Thread.currentThread().interrupt();
+						}
+					}
+					else
+						iterations++;
+				}
 				array[j] = value;
 			}
 		}
+		return iterations;
 	}
 	public static void main (String args[])
 	{

@@ -13,6 +13,7 @@ class Main extends JFrame {
 	
 	//iterations (display)
 	private static int iterations = 0;
+	public int getIterations() {return iterations;}
 	public void setIterations(int i) {iterations = i;}
 	public void updateIterations() {
 		lblIterations.setText("Iterations: " + iterations);
@@ -20,8 +21,12 @@ class Main extends JFrame {
 	private static JLabel lblIterations = new JLabel("Iterations: " + iterations);
 	
 	//delay and time set
+	private JLabel lblDelay = new JLabel("Delay (ms):");
 	private JTextField txtDelay = new JTextField();
+	public JTextField getTxtDelay() {return txtDelay;}
+	private JLabel lblTime = new JLabel("Time (s):");
 	private JTextField txtTime = new JTextField();
+	public JTextField getTxtTime() {return txtTime;}
 	
 	///NEXT COLUMN///
 	
@@ -50,6 +55,9 @@ class Main extends JFrame {
 	String[]backgroundChoices = {"White", "Black", "Gray"};
 	JComboBox<String> drpChooseBackground = new JComboBox<String>(backgroundChoices);
 	private JButton btnBackgroundSet = new JButton("Set");
+	
+	//kill switch
+	private JButton btnKILL = new JButton("Force Stop");
 
 	private SortGraphics panel = new SortGraphics(this);
 	//private JTextField txtB = new JTextField(); (template stuff)
@@ -83,9 +91,14 @@ class Main extends JFrame {
 		add(lblIterations);
 		
 		//delay and time set
-		//TODO
-		//add(txtDelay);
-		//add(txtTime);
+		lblDelay.setBounds(50,520, 80,30);
+		txtDelay.setBounds(118,520, 40,30);
+		lblTime.setBounds(170,520, 80,30);
+		txtTime.setBounds(225,520, 40,30);
+		add(lblDelay);
+		add(lblTime);
+		add(txtDelay);
+		add(txtTime);
 		
 		///NEXT COLUMN///
 		
@@ -113,6 +126,7 @@ class Main extends JFrame {
 		lblColorSet.setBounds(520,450, 70,30);
 		drpChooseColor.setBounds(580,450, 100,30);
 		btnColorSet.setBounds(685,450, 60,30);
+		add(btnColorSet);
 		add(lblColorSet);
 		drpChooseColor.setVisible(true);
 		add(drpChooseColor);
@@ -125,17 +139,13 @@ class Main extends JFrame {
 		drpChooseBackground.setVisible(true);
 		add(drpChooseBackground);
 		add(btnBackgroundSet);
+		
+		//kill switch
+		btnKILL.setBounds(520,520, 100,30);
+		add(btnKILL);
 
 		//txtB.setBounds(100,35,100,20);
 		//txtC.setBounds(100,65,100,20); (stuff that came with the template)
-
-
-
-		
-
-		
-		add(btnColorSet);
-		
 
 		add(panel);
 
@@ -165,6 +175,19 @@ class Main extends JFrame {
 			}
 		});
 		
+		//delay and time
+		txtDelay.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				txtDelaySet(e);
+			}
+		});
+		
+		txtTime.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				txtTimeSet(e);
+			}
+		});
+		
 		//sort
 		btnSort.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -179,7 +202,7 @@ class Main extends JFrame {
 			}
 		});
 		
-		//sorttype
+		//sort type
 		drpChooseSort.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				drpChooseSortUpdate(e);
@@ -197,6 +220,13 @@ class Main extends JFrame {
 		btnBackgroundSet.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				btnBackgroundSetClick(e);
+			}
+		});
+		
+		//kill switch
+		btnKILL.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnKILLClick(e);
 			}
 		});
 		
@@ -219,6 +249,45 @@ class Main extends JFrame {
 				panel.initElements(x);
 			}
 			
+		}catch(Exception e){
+			String exc = e.toString();
+			if(exc.contains("java.lang.NumberFormatException")) {
+				txtElementCount.setText("100");
+			}else {
+			System.out.println(e);
+			JOptionPane.showMessageDialog(null, 
+				e.toString(),
+				"Error", 
+				JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+	
+	private void txtDelaySet(ActionEvent evt){
+		try{
+			double i = Double.valueOf(txtDelay.getText());
+			int j = (int)i;
+			panel.setSleep(j);
+			panel.setTime();
+		}catch(Exception e){
+			String exc = e.toString();
+			if(exc.contains("java.lang.NumberFormatException")) {
+				txtElementCount.setText("100");
+			}else {
+			System.out.println(e);
+			JOptionPane.showMessageDialog(null, 
+				e.toString(),
+				"Error", 
+				JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+	
+	private void txtTimeSet(ActionEvent evt){
+		try{
+			double d = Double.valueOf(txtTime.getText());
+			panel.setTime(d);
+			panel.setSleep();
 		}catch(Exception e){
 			String exc = e.toString();
 			if(exc.contains("java.lang.NumberFormatException")) {
@@ -293,12 +362,22 @@ class Main extends JFrame {
 		}
 	}
 	
+	private void btnKILLClick(ActionEvent evt) {
+		try{
+			panel.setKILL(true);
+		}catch(Exception e){
+			System.out.println(e);
+			JOptionPane.showMessageDialog(null, 
+				e.toString(),
+				"Error", 
+				JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
 
 	public static void main(String[] args){
 		Main f = new Main();
-	    while(true) {
-	    	f.setVisible(true);
-	    }
+		f.setVisible(true);
 	}
 }
 

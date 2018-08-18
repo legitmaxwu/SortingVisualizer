@@ -11,11 +11,13 @@ public class SortingMain {
 		d = desired;
 	}
 	
-	public static int sort(boolean test) {
+	public static int sort(boolean test, int sleep) {
 		if (d.equals("Selection Sort"))
-			return SelectionSort.selectionSort(g.getElements(), g, test);
+			return SelectionSort.selectionSort(g.getElements(), g, test, sleep);
 		if (d.equals("Quick Sort"))
-			return QuickSort.quickSort(g.getElements(), g, test);
+			return QuickSort.quickSort(g.getElements(), g, test, sleep);
+		if (d.equals("Insertion Sort"))
+			return InsertionSort.insertionSort(g.getElements(), g, test, sleep);
 		return 0;
 	}
 	
